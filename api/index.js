@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import nodemailer from 'nodemailer';
 import { db } from "./db.js";
+import moment from "moment";
 
 const app = express();
 
@@ -79,7 +80,6 @@ app.post("/api/comments", (req, res) => {
 app.post('/api/contact', async (req, res) => {
   const { name, email, subject, message } = req.body;
 
-  // Validation des champs requis
   if (!name || !email || !subject || !message) {
       return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
   }
@@ -88,30 +88,37 @@ app.post('/api/contact', async (req, res) => {
       const transporter = nodemailer.createTransport({
           host: 'smtp.gmail.com',
           port: 587,
-          secure: false, // Utilise TLS
+          secure: false, 
           auth: {
-              user: 'dinaelhyate@gmail.com', // Votre adresse Gmail
-              pass: 'fvlrnrdnfcffopyy', // Mot de passe d'application
+              user: 'dinaelhyate@gmail.com', 
+              pass: 'fvlrnrdnfcffopyy', 
           },
           tls: {
-              rejectUnauthorized: false, // Permet les certificats auto-signés
+              rejectUnauthorized: false, 
           },
       });
 
-      // Utiliser l'email fourni dans le formulaire pour le destinataire
+      console.log(`Message à envoyer :`);
+      console.log(`De : ${email}`);
+      console.log(`À : dinaelhyate@gmail.com`);
+      console.log(`Objet : ${subject}`);
+      console.log(`Message : ${message}`);
+
+      // Correction ici : on envoie l'email depuis l'adresse de l'utilisateur (email)
       await transporter.sendMail({
-          from: `"${name}" <${email}>`, // Expéditeur
-          to: 'dinaelhyate@gmail.com', // Destinataire (utilisé depuis l'input)
-          subject: subject, // Sujet
-          text: message, // Message
+          from: `"${name}" <${email}>`, // Ici, on définit le nom et l'email
+          to: 'dinaelhyate@gmail.com',
+          subject: subject, 
+          text: message, 
       });
 
       res.status(200).json({ message: 'Message envoyé avec succès.' });
   } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error);
-      res.status(500).json({ error: 'Erreur lors de l\'envoi du message.' });
+      res.status(500).json({ error: 'Erreur lors de l envoi du message' });
   }
 });
+
 
 
 app.use("/api/auth", authRoutes);
