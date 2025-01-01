@@ -126,6 +126,21 @@ describe("Comments API", () => {
       expect(response.body.error).toBe("Failed to fetch user.");
     });
 
+    it("should return 500 if there is a database error during user fetch", async () => {
+      db.query.mockImplementationOnce((query, params, callback) => {
+        callback(new Error("Database error")); // Mock user query error
+      });
+
+      const response = await request(app).post("/api/comments").send({
+        postId: 2,
+        userId: 1,
+        text: "Test comment",
+      });
+
+      expect(response.status).toBe(500);
+      expect(response.body.error).toBe("Failed to fetch user.");
+    });
+
     it("should return 500 if there is a database error during insertion", async () => {
       db.query.mockImplementationOnce((query, params, callback) => {
         callback(null, [{ username: "testuser" }]); // Mock user query
