@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                dir('api') { // Change directory to /api
+                dir('api') { 
                     sh 'npm install'
                 }
             }
@@ -12,8 +12,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                dir('api') { // Change directory to /api
-                    sh 'npm test' // Ensure the test script in package.json is configured to run tests in /api/tests
+                dir('api') { 
+                    sh 'npm test' 
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
 
     post {
         always {
-            // Archive test results if applicable
+          
             archiveArtifacts artifacts: 'api/tests/**/*.js', allowEmptyArchive: true
         }
         success {
