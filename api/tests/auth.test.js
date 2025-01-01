@@ -12,7 +12,6 @@ app.post("/register", register);
 
 describe("POST /register", () => {
   it("should register a new user successfully", async () => {
-    // Mocking the database responses
     db.query.mockImplementationOnce((query, params, callback) => {
       callback(null, []); // Simulate no existing user
     });

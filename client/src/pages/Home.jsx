@@ -37,7 +37,7 @@ const Home = () => {
             <div className="row">
               <div className="col-lg-12">
                 <div className="page-banner text-center">
-                  <h2 className="title">Course Sidebar</h2>
+                  <h2 className="title">Course Sidebar dina</h2>
                   <ul className="breadcrumb justify-content-center">
                     <li className="breadcrumb-item">
                       <Link to="/">Home</Link>
